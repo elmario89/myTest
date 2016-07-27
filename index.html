@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <link href="tester/testharness.css" rel="stylesheet">
+    <script src="tester/testharness.js"></script>
+  </head>
+  <body>
+    <form>
+      <input type="number" id="firstInput" required>
+      <input type="number" id="secondInput" required>
+      <input type="submit">
+    </form>
+    <div id='result'></div>
+  </body>
+  <script>
+    var form = document.querySelector('form');
+
+    form.addEventListener('submit', function(e){
+      console.log('submit from program');
+      e.preventDefault();
+
+      var firstInput = document.querySelector('#firstInput').value;
+      var secondInput = document.querySelector('#secondInput').value;
+
+      calc(firstInput,secondInput);
+    });
+
+    function calc(firstValue, secondValue){
+      var resultContainer = document.querySelector('#result');
+      var result = Number(firstValue) + Number(secondValue);
+      resultContainer.innerHTML = result;
+    };
+  </script>
+  <script>
+    var test1 = async_test('nazvanie testa 1');
+    var test2 = async_test('testing result');
+
+    // fixture
+    var a = 12;
+    var b = 25;
+    var result = a + b;
+
+    document.querySelector('#firstInput').value = a;
+    document.querySelector('#secondInput').value = b;
+
+    var form = document.querySelector('form');
+  //form.addEventListener('submit', test1.step_func(e => {
+    form.addEventListener('submit', test1.step_func(function(e) {
+      console.log('submit from test', a, b);
+      e.preventDefault();
+
+      var i1 = Number(e.target[0].value);
+      var i2 = Number(e.target[1].value);
+      assert_equals(result, i1 + i2);
+      this.done();
+    }));
+
+    console.log('dispatch 1');
+    form.dispatchEvent(new Event('submit'));
+    console.log('end dispatch 1');
+
+    //fixture
+    a = 15;
+    b = 15;
+    result = a + b;
+
+    document.querySelector('#firstInput').value = a;
+    document.querySelector('#secondInput').value = b;
+
+    form.addEventListener('submit', test2.step_func(function(e) {
+      console.log('mine', a, b);
+      e.preventDefault;
+
+      var i1 = Number(e.target[0].value);
+      var i2 = Number(e.target[1].value);
+      assert_equals(i1 + i2, result);
+      this.done();
+    }));
+
+    console.log('dispatch 2');
+    form.dispatchEvent(new Event('submit'));
+    console.log('end dispatch 2');
+  </script>
+</html>
