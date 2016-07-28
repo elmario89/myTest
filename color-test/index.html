@@ -1,0 +1,60 @@
+<html>
+<head>
+  <link href="../tester/testharness.css" rel="stylesheet">
+  <script src="../tester/testharness.js"></script>
+</head>
+<body>
+  <div style='width:150px; height:150px; background-color: green; margin-bottom: 50px;'>
+    color testing
+  </div>
+  <button id='changeColor'>change color</button>
+</body>
+
+<!--change-color-function-->
+<script type="text/javascript">
+
+  var button = document.querySelector('#changeColor');
+  var div = document.querySelector('div');
+
+  button.addEventListener('click', function(){
+    changeColor();
+  });
+
+  function changeColor(){
+    if (div.style.backgroundColor === 'green'){
+      div.style.backgroundColor = 'red';
+    } else {
+      div.style.backgroundColor = 'green';
+    }
+  };
+</script>
+
+<!--TESTINg-->
+<script>
+  var button = document.querySelector('#changeColor');
+  var div = document.querySelector('div');
+
+  var colorRed = 'red';
+  var colorGreen = 'green';
+
+  var test1 = async_test('color test to red');
+
+  button.addEventListener('click', test1.step_func(function(e){
+    var color1 = div.style.backgroundColor;
+    assert_equals(color1,colorRed)
+    this.done();
+  }));
+
+  button.dispatchEvent(new Event('click'));
+
+  var test2 = async_test('color test to green');
+
+  button.addEventListener('click', test2.step_func(function(e){
+    var color1 = div.style.backgroundColor;
+    assert_equals(color1, colorGreen);
+    this.done();
+  }));
+
+  button.dispatchEvent(new Event('click'));
+</script>
+</html>
