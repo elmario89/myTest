@@ -8,6 +8,8 @@
     color testing
   </div>
   <button id='changeColor'>change color</button>
+  <br><br>
+  <span id='text'></span>
 </body>
 
 <!--change-color-function-->
@@ -15,6 +17,7 @@
 
   var button = document.querySelector('#changeColor');
   var div = document.querySelector('div');
+  var text = document.querySelector('#text');
 
   button.addEventListener('click', function(){
     changeColor();
@@ -26,7 +29,12 @@
     } else {
       div.style.backgroundColor = 'green';
     }
+    changeText();
   };
+
+  function changeText(){
+    text.innerHTML = div.style.backgroundColor;
+  }
 </script>
 
 <!--TESTINg-->
@@ -41,7 +49,7 @@
 
   button.addEventListener('click', test1.step_func(function(e){
     var color1 = div.style.backgroundColor;
-    assert_equals(color1,colorRed)
+    assert_equals(color1,colorRed);
     this.done();
   }));
 
@@ -56,5 +64,6 @@
   }));
 
   button.dispatchEvent(new Event('click'));
+
 </script>
 </html>
