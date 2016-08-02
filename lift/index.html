@@ -69,25 +69,82 @@
     <div class='wrapper'>
       <div class='lift-cabine second'></div>
       <div class='buttons'>
-        <button id='3'>3</button>
-        <button id='2'>2</button>
-        <button id='1'>1</button>
-        <button id='-1'>-1</button>
+        <button id='btn-3'>3</button>
+        <button id='btn-2'>2</button>
+        <button id='btn-1'>1</button>
+        <button id='btn-0'>-1</button>
       </div>
     </div>
 
+<!--lift programme -->
+  <script>
+    var buttons = document.querySelectorAll('button');
+
+    buttons.forEach(function(e){
+      e.addEventListener('click', function(e){
+        console.log(e.target.id);
+      })
+    })
+  </script>
 
 <!--testing-->
-    <script>
-      var buttons = document.querySelectorAll('button');
+  <script>
+    // testing querySelectorAll
+    var buttons = document.querySelectorAll('button');
 
-      var test1 = async_test('testing querySelectorAll for floors-buttons');
+    var testSelectorAll = async_test('testing querySelectorAll for floors-buttons');
 
-      window.addEventListener('load', test1.step_func(function(e){
-        var amount = 4;
-        assert_equals(buttons.length, amount);
-        this.done();
-      }))
-    </script>
+    window.addEventListener('load', testSelectorAll.step_func(function(){
+      var amount = 4;
+      assert_equals(buttons.length, amount);
+      this.done();
+    }));
+
+    //testing id of clicked button
+
+    var async1 = async_test('third floor button id match on dispatchEventClick');
+    var async2 = async_test('second floor button id match on dispatchEventClick');
+    var async3 = async_test('first floor button id match on dispatchEventClick');
+    var async4 = async_test('basement floor button id match on dispatchEventClick');
+
+    buttons[0].addEventListener('click', async1.step_func(function(e){
+      assert_equals(buttons[0].id, e.target.id);
+      async1.done();
+      async2.next();
+    }));
+
+    buttons[0].dispatchEvent(new Event('click'));
+
+    buttons[1].addEventListener('click', async2.step_func(function(e){
+      assert_equals(buttons[1].id, e.target.id);
+      async2.done();
+      async3.next();
+    }));
+
+    buttons[1].dispatchEvent(new Event('click'));
+
+    buttons[2].addEventListener('click', async3.step_func(function(e){
+      assert_equals(buttons[2].id, e.target.id);
+      async3.done();
+      async4.next();
+    }));
+
+    buttons[2].dispatchEvent(new Event('click'));
+
+    buttons[3].addEventListener('click', async4.step_func(function(e){
+      assert_equals(buttons[3].id, e.target.id);
+      async4.done();
+    }));
+
+    buttons[3].dispatchEvent(new Event('click'));
+
+    // start the process
+    async1.step(_ => {
+      async1.next();
+    });
+
+    //testing if class pf lift-cabine added
+
+  </script>
   </body>
 </html>
