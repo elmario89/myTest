@@ -28,27 +28,27 @@
         bottom: 0;
       }
 
-      .lift-cabine.basement{
+      .lift-cabine.btn-0{
         bottom: -190px;
         transition: bottom 2s ease-in-out;
         -webkit-transition: bottom 2s ease-in-out;
       }
 
-      .lift-cabine.first{
+      .lift-cabine.btn-1{
         bottom: 0;
         transition: bottom 2s ease-in-out;
         -webkit-transition: bottom 2s ease-in-out;
       }
 
 
-      .lift-cabine.second{
+      .lift-cabine.btn-2{
         bottom: 50%;
         transition: bottom 2s ease-in-out;
         -webkit-transition: bottom 2s ease-in-out;
       }
 
 
-      .lift-cabine.third{
+      .lift-cabine.btn-3{
         bottom: calc(100% - 210px);
       }
 
@@ -67,7 +67,7 @@
       }
     </style>
     <div class='wrapper'>
-      <div class='lift-cabine second'></div>
+      <div class='lift-cabine'></div>
       <div class='buttons'>
         <button id='btn-3'>3</button>
         <button id='btn-2'>2</button>
@@ -79,12 +79,13 @@
 <!--lift programme -->
   <script>
     var buttons = document.querySelectorAll('button');
+    var liftCabine = document.querySelector('.lift-cabine');
 
-    buttons.forEach(function(e){
-      e.addEventListener('click', function(e){
-        console.log(e.target.id);
-      })
-    })
+    buttons.forEach(function(item){
+      item.addEventListener('click', function(e){
+        // console.log(e.target.id)
+      });
+    });
   </script>
 
 <!--testing-->
@@ -102,48 +103,22 @@
 
     //testing id of clicked button
 
-    var async1 = async_test('third floor button id match on dispatchEventClick');
-    var async2 = async_test('second floor button id match on dispatchEventClick');
-    var async3 = async_test('first floor button id match on dispatchEventClick');
-    var async4 = async_test('basement floor button id match on dispatchEventClick');
+    var testButtonsId = async_test('testing class of lift-cabine');
 
-    buttons[0].addEventListener('click', async1.step_func(function(e){
-      assert_equals(buttons[0].id, e.target.id);
-      async1.done();
-      async2.next();
-    }));
+    testButtonsId.step(function(){
+      buttons.forEach(function(item){
+        item.addEventListener('click', testButtonsId.step_func(function(e){
+          assert_equals(item.id, e.target.id);
+          testButtonsId.done();
+        }));
+      });
 
-    buttons[0].dispatchEvent(new Event('click'));
-
-    buttons[1].addEventListener('click', async2.step_func(function(e){
-      assert_equals(buttons[1].id, e.target.id);
-      async2.done();
-      async3.next();
-    }));
-
-    buttons[1].dispatchEvent(new Event('click'));
-
-    buttons[2].addEventListener('click', async3.step_func(function(e){
-      assert_equals(buttons[2].id, e.target.id);
-      async3.done();
-      async4.next();
-    }));
-
-    buttons[2].dispatchEvent(new Event('click'));
-
-    buttons[3].addEventListener('click', async4.step_func(function(e){
-      assert_equals(buttons[3].id, e.target.id);
-      async4.done();
-    }));
-
-    buttons[3].dispatchEvent(new Event('click'));
-
-    // start the process
-    async1.step(_ => {
-      async1.next();
+      buttons.forEach(function(item){
+        item.dispatchEvent(new Event('click'));
+      });
     });
 
-    //testing if class pf lift-cabine added
+    // testing if id of button apply to lift cabine
 
   </script>
   </body>
