@@ -161,6 +161,7 @@
       callGroupTest1(i);
     }
 
+    //test column2
     function callGroupTest2(i) {
       var testBtns2 = async_test('if i click on btn ' + i + ' of first column then lift1 should have class column2');
 
@@ -180,6 +181,28 @@
 
     for (var i = 0; i < buttons1.length; i++) {
       callGroupTest2(i);
+    }
+
+    function moveLiftTest(i) {
+      var testMoveLift = async_test('if i click on button ' + i + ' my lift should have this -> ' + i + ' class');
+
+      testMoveLift.step(function(){
+        var btn = buttons1[i];
+
+        btn.addEventListener('click', testMoveLift.step_func(function(e){
+          assert_true(cabine1.classList.contains(btn.className));
+          testMoveLift.done();
+
+          //tear-down (чистка)
+          cabine1.classList.remove(btn.className);
+        }));
+
+        btn.dispatchEvent(new Event('click'));
+      })
+    }
+
+    for (var i = 0; i < buttons1.length; i++){
+      moveLiftTest(i);
     }
 
 })();
