@@ -103,29 +103,24 @@
   <script>
     var buttons1 = document.querySelectorAll('.buttons.buttons1 button');
     var buttons2 = document.querySelectorAll('.buttons.buttons2 button');
-    var liftCabine = document.querySelector('.liftCabine');
+    var liftCabine1 = document.querySelector('.liftCabine1');
 
-    function foreachbtn(buttons){
-      buttons.forEach(function(item){
-        item.addEventListener('click', function(e){
-          if (e.target.parentNode.classList.contains('buttons1')) {
-            // console.log('first buttons');
-          } else {
-              // console.log('second buttons');
-            }
-        })
+    for (var i = 0; i < buttons1.length; i++){
+      buttons1[i].addEventListener('click', function(){
+        liftCabine1.classList.add('column1');
       });
     }
 
-    foreachbtn(buttons1);
-    foreachbtn(buttons2);
   </script>
 
 <!--testing-->
   <script>
+
+;(function() {
     //test if massive of two buttons created
     var buttons1 = document.querySelectorAll('.buttons.buttons1 button');
     var buttons2 = document.querySelectorAll('.buttons.buttons2 button');
+    var cabine1 = document.querySelector('.liftCabine1');
 
     var twoBtnArrayTest = async_test('testing if massive of two buttons created');
 
@@ -136,61 +131,31 @@
       this.done();
     }));
 
-    //testing id of clicked button
+    // test column1
+    function callTest(i) {
+      var testBtn = async_test('if i click on btn ' + i + ' of first column then lift1 should have class column1');
 
-    var testButtonsId = async_test('testing class of lift-cabine');
+      testBtn.step(function(){
+        var btn = buttons1[i];
+        btn.addEventListener('click', testBtn.step_func(function(e){
+          // cabine1.classList.add(e.target.className);
+          assert_true(cabine1.classList.contains('column1'));
+          console.log(e.target);
+          testBtn.done();
 
-    testButtonsId.step(function(){
-      foreachbtn(buttons1);
-      foreachbtn(buttons2);
-    });
-
-    function foreachbtn(buttons){
-      buttons.forEach(function(item){
-        item.addEventListener('click', testButtonsId.step_func(function(e){
-          assert_equals(item.id, e.target.id);
-          testButtonsId.done();
+          // tear-down
+          cabine1.classList.remove('column1');
         }));
-      });
 
-      buttons.forEach(function(item){
-        item.dispatchEvent(new Event('click'));
+        btn.dispatchEvent(new Event('click'));
       });
     }
 
-    // testing if id of button apply to lift cabine
-    var liftCabine = document.querySelector('.liftCabine');
-
-    var liftCabineTest = async_test('testing if lift cabine has class of clicked button');
-
-    liftCabineTest.step(function(){
-      buttons.forEach(function(item){
-        item.addEventListener('click', liftCabineTest.step_func(function(e){
-          assert_equals(liftCabine.className, e.target.id);
-          liftCabineTest.done();
-        }));
-      });
-
-      buttons.forEach(function(item){
-        item.dispatchEvent(new Event('click'));
-      });
-    });
-
-    //testing first and second column of buttons
-    var testColumns = async_test('first and second column of buttons');
-
-    testColumns.step(function(){
-      foreachInCol(buttons1);
-      foreachInCol(buttons2);
-    });
-
-    function foreachInCol(buttons){
-      buttons.forEach(testColumns.step_func(function(item){
-        console.log(item);
-        testColumns.done();
-      }))
+    for (var i = 0; i < buttons1.length; i++) {
+      callTest(i);
     }
 
+})();
   </script>
   </body>
 </html>
