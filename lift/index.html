@@ -81,8 +81,8 @@
       }
     </style>
     <div class='wrapper'>
-      <div class='liftCabine liftCabine1'></div>
-      <div class='liftCabine liftCabine2'></div>
+      <div class='liftCabine liftCabine1'>1</div>
+      <div class='liftCabine liftCabine2'>2</div>
       <div class='buttons buttons1'>
         1 lift
         <button class='btn-3'>3</button>
@@ -108,7 +108,11 @@
     function foreachbtn(buttons){
       buttons.forEach(function(item){
         item.addEventListener('click', function(e){
-          console.log(e.target);
+          if (e.target.parentNode.classList.contains('buttons1')) {
+            // console.log('first buttons');
+          } else {
+              // console.log('second buttons');
+            }
         })
       });
     }
@@ -171,6 +175,21 @@
         item.dispatchEvent(new Event('click'));
       });
     });
+
+    //testing first and second column of buttons
+    var testColumns = async_test('first and second column of buttons');
+
+    testColumns.step(function(){
+      foreachInCol(buttons1);
+      foreachInCol(buttons2);
+    });
+
+    function foreachInCol(buttons){
+      buttons.forEach(testColumns.step_func(function(item){
+        console.log(item);
+        testColumns.done();
+      }))
+    }
 
   </script>
   </body>
