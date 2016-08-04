@@ -1,0 +1,25 @@
+<html>
+  <head></head>
+  <body>
+    <script>
+      var y = function() {
+        return {
+          then: function(resolve, reject) {
+            setTimeout(() => {
+              reject();
+            }, 1000);
+          }
+        }
+      };
+
+      y().then(
+        result => {
+          alert('success promise');
+        },
+        error => {
+          alert('error promise');
+        }
+      );
+    </script>
+  </body>
+</html>
