@@ -104,10 +104,17 @@
     var buttons1 = document.querySelectorAll('.buttons.buttons1 button');
     var buttons2 = document.querySelectorAll('.buttons.buttons2 button');
     var liftCabine1 = document.querySelector('.liftCabine1');
+    var liftCabine2 = document.querySelector('.liftCabine2');
 
     for (var i = 0; i < buttons1.length; i++){
       buttons1[i].addEventListener('click', function(){
         liftCabine1.classList.add('column1');
+      });
+    }
+
+    for (var i = 0; i < buttons2.length; i++){
+      buttons2[i].addEventListener('click', function(){
+        liftCabine2.classList.add('column2');
       });
     }
 
@@ -121,6 +128,7 @@
     var buttons1 = document.querySelectorAll('.buttons.buttons1 button');
     var buttons2 = document.querySelectorAll('.buttons.buttons2 button');
     var cabine1 = document.querySelector('.liftCabine1');
+    var cabine2 = document.querySelector('.liftCabine2');
 
     var twoBtnArrayTest = async_test('testing if massive of two buttons created');
 
@@ -132,16 +140,14 @@
     }));
 
     // test column1
-    function callTest(i) {
-      var testBtn = async_test('if i click on btn ' + i + ' of first column then lift1 should have class column1');
+    function callGroupTest1(i) {
+      var testBtns1 = async_test('if i click on btn ' + i + ' of first column then lift1 should have class column1');
 
-      testBtn.step(function(){
+      testBtns1.step(function(){
         var btn = buttons1[i];
-        btn.addEventListener('click', testBtn.step_func(function(e){
-          // cabine1.classList.add(e.target.className);
+        btn.addEventListener('click', testBtns1.step_func(function(e){
           assert_true(cabine1.classList.contains('column1'));
-          console.log(e.target);
-          testBtn.done();
+          testBtns1.done();
 
           // tear-down
           cabine1.classList.remove('column1');
@@ -152,7 +158,28 @@
     }
 
     for (var i = 0; i < buttons1.length; i++) {
-      callTest(i);
+      callGroupTest1(i);
+    }
+
+    function callGroupTest2(i) {
+      var testBtns2 = async_test('if i click on btn ' + i + ' of first column then lift1 should have class column2');
+
+      testBtns2.step(function(){
+        var btn = buttons2[i];
+        btn.addEventListener('click', testBtns2.step_func(function(e){
+          assert_true(cabine2.classList.contains('column2'));
+          testBtns2.done();
+
+          // tear-down
+          cabine1.classList.remove('column2');
+        }));
+
+        btn.dispatchEvent(new Event('click'));
+      });
+    }
+
+    for (var i = 0; i < buttons1.length; i++) {
+      callGroupTest2(i);
     }
 
 })();
