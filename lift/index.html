@@ -21,11 +21,21 @@
         width: 150px;
         height: 200px;
         position: absolute;
-        left: 50%;
+        /*left: 50%;*/
         transform: translateX(-50%);
         transition: bottom 2s ease-in-out;
         -webkit-transition: bottom 2s ease-in-out;
         bottom: 0;
+      }
+
+      .liftCabine1{
+        left: 40%;
+        background-color: red;
+      }
+
+      .liftCabine2{
+        left: 60%;
+        background-color: green;
       }
 
       .liftCabine.btn-0{
@@ -71,7 +81,8 @@
       }
     </style>
     <div class='wrapper'>
-      <div class='liftCabine'></div>
+      <div class='liftCabine liftCabine1'></div>
+      <div class='liftCabine liftCabine2'></div>
       <div class='buttons buttons1'>
         1 lift
         <button class='btn-3'>3</button>
@@ -93,12 +104,6 @@
     var buttons1 = document.querySelectorAll('.buttons.buttons1 button');
     var buttons2 = document.querySelectorAll('.buttons.buttons2 button');
     var liftCabine = document.querySelector('.liftCabine');
-
-    // buttons.forEach(function(item){
-    //   item.addEventListener('click', function(e){
-    //     liftCabine.className = e.target.className;
-    //   });
-    // });
 
     function foreachbtn(buttons){
       buttons.forEach(function(item){
@@ -139,7 +144,7 @@
     function foreachbtn(buttons){
       buttons.forEach(function(item){
         item.addEventListener('click', testButtonsId.step_func(function(e){
-          // assert_equals(item.id, e.target.id);
+          assert_equals(item.id, e.target.id);
           testButtonsId.done();
         }));
       });
