@@ -107,14 +107,16 @@
     var liftCabine2 = document.querySelector('.liftCabine2');
 
     for (var i = 0; i < buttons1.length; i++){
-      buttons1[i].addEventListener('click', function(){
-        liftCabine1.classList.add('column1');
+      buttons1[i].addEventListener('click', function(e){
+        liftCabine1.className = '';
+        liftCabine1.classList.add(e.target.className, 'liftCabine1', 'liftCabine', 'column1');
       });
     }
 
     for (var i = 0; i < buttons2.length; i++){
-      buttons2[i].addEventListener('click', function(){
-        liftCabine2.classList.add('column2');
+      buttons2[i].addEventListener('click', function(e){
+        liftCabine2.className = '';
+        liftCabine2.classList.add(e.target.className, 'liftCabine2', 'liftCabine', 'column2');
       });
     }
 
@@ -183,6 +185,7 @@
       callGroupTest2(i);
     }
 
+    //test if lift1 got class of column1 buttons
     function moveLiftTest(i) {
       var testMoveLift = async_test('if i click on button ' + i + ' my lift should have this -> ' + i + ' class');
 
@@ -205,6 +208,76 @@
       moveLiftTest(i);
     }
 
+    //test if lift2 got class of column2 buttons
+    function moveLiftTest2(i) {
+      var testMoveLift2 = async_test('if i click on button ' + i + ' my lift should have this -> ' + i + ' class');
+
+      testMoveLift2.step(function(){
+        var btn = buttons2[i];
+
+        btn.addEventListener('click', testMoveLift2.step_func(function(e){
+          assert_true(cabine2.classList.contains(btn.className));
+          testMoveLift2.done();
+
+          //tear-down (чистка)
+          cabine2.classList.remove(btn.className);
+        }));
+
+        btn.dispatchEvent(new Event('click'));
+      })
+    }
+
+    for (var i = 0; i < buttons2.length; i++){
+      moveLiftTest2(i);
+    }
+
+    //test if lift1 got only four classes: liftcabine + liftcabine1 + column1 and class of floor
+    function checkClasses(i) {
+      var testCheckClasses = async_test('if i click on button btn-' + i + ' elevator1 should have -> btn-' + i + ' class and classes liftcabine and liftcabine1 and column1');
+
+      testCheckClasses.step(function(){
+        var btn = buttons1[i];
+
+        btn.addEventListener('click', testCheckClasses.step_func(function(e){
+          assert_true(cabine1.classList.contains('liftCabine', 'liftCabine1', e.target.className));
+          assert_equals(cabine1.classList.length, 4);
+          testCheckClasses.done();
+
+          //tear-down (чистка)
+          cabine1.classList.remove(e.target.className);
+        }));
+
+        btn.dispatchEvent(new Event('click'));
+      });
+    }
+
+    for (var i = 0; i < buttons1.length; i++){
+      checkClasses(i);
+    }
+
+    // test if lift2 got only four classes: liftcabine + liftcabine1 + column2 and class of floor
+    function checkClasses2(i) {
+      var testCheckClasses2 = async_test('if i click on button btn-' + i + ' elevator1 should have -> btn-' + i + ' class and classes liftcabine and liftcabine1 and column1');
+
+      testCheckClasses2.step(function(){
+        var btn = buttons2[i];
+
+        btn.addEventListener('click', testCheckClasses2.step_func(function(e){
+          assert_true(cabine2.classList.contains('liftCabine', 'liftCabine1', e.target.className));
+          assert_equals(cabine2.classList.length, 4);
+          testCheckClasses2.done();
+
+          //tear-down (чистка)
+          cabine2.classList.remove(e.target.className);
+        }));
+
+        btn.dispatchEvent(new Event('click'));
+      });
+    }
+
+    for (var i = 0; i < buttons2.length; i++){
+      checkClasses2(i);
+    }
 })();
   </script>
   </body>
