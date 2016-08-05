@@ -32,12 +32,21 @@
     <div class='wrapper'>
       <div id='lift'></div>
     </div>
+
+    <div class='buttons'>
+      <button class='floor3'>3</button>
+      <button class='floor2'>2</button>
+      <button class='floor1'>1</button>
+      <button class='floor0'>-1</button>
+    </div>
   </body>
 
-  <script></script>
+  <script>
+    var lift = document.querySelector('#lift');
+    lift.getFloor = function(){ return 0};
+  </script>
 
 <!--testing-->
-
   <script>
     var test1 = async_test('check if lift is exist');
 
@@ -45,6 +54,25 @@
 
     window.addEventListener('load', test1.step_func(function(){
       assert_true(lift instanceof HTMLElement);
+      assert_true(lift.getFloor instanceof Function);
       this.done();
     }));
+
+
+    var test2 = async_test('check where is the lift');
+
+    var lift = document.querySelector('#lift');
+    var floor = lift.getFloor();
+    var buttons = document.querySelectorAll('button');
+
+    buttons.forEach(function(item){
+      item.addEventListener('click', test2.step_func(function(){
+      assert_equals(floor, 0);
+      this.done();
+    }));
+
+      item.dispatchEvent(new Event('click'));
+    })
+
+
   </script>
