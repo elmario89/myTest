@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <link href="../tester/testharness.css" rel="stylesheet">
+    <script src="../tester/testharness.js"></script>
+  </head>
+  <body>
+    <style>
+      body{
+        margin: 0;
+      }
+
+      .wrapper{
+        max-width: 1024px;
+        margin: 0 auto;
+        position: relative;
+        height: 100%;
+      }
+
+      #lift{
+        border: 4px solid black;
+        width: 150px;
+        height: 200px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: bottom 2s ease-in-out;
+        -webkit-transition: bottom 2s ease-in-out;
+        bottom: 0;
+      }
+
+    </style>
+    <div class='wrapper'>
+      <div id='lift'></div>
+    </div>
+  </body>
+
+  <script></script>
+
+<!--testing-->
+
+  <script>
+    var test1 = async_test('check if lift is exist');
+
+    var lift = document.querySelector('#lift');
+
+    window.addEventListener('load', test1.step_func(function(){
+      assert_true(lift instanceof HTMLElement);
+      this.done();
+    }));
+  </script>
