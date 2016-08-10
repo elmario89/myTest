@@ -21,32 +21,85 @@
         width: 150px;
         height: 200px;
         position: absolute;
-        left: 50%;
+        left: 40%;
         transform: translateX(-50%);
         transition: bottom 2s ease-in-out;
         -webkit-transition: bottom 2s ease-in-out;
         bottom: 0;
+        background-color: red;
       }
+
+      #lift2{
+        border: 4px solid black;
+        width: 150px;
+        height: 200px;
+        position: absolute;
+        left: 60%;
+        transform: translateX(-50%);
+        transition: bottom 2s ease-in-out;
+        -webkit-transition: bottom 2s ease-in-out;
+        bottom: 0;
+        background-color: green;
+      }
+
+      #lift.floor0 {
+        bottom: -150px;
+      }
+      #lift.floor1 {
+        bottom: 0;
+      }
+      #lift.floor2 {
+        bottom: 50%;
+      }
+      #lift.floor3 {
+        bottom: calc(100% - 200px);
+      }
+
+      #lift2.floor20 {
+        bottom: -150px;
+      }
+      #lift2.floor21 {
+        bottom: 0;
+      }
+      #lift2.floor22 {
+        bottom: 50%;
+      }
+      #lift2.floor23 {
+        bottom: calc(100% - 200px);
+      }
+
 
     </style>
     <div class='wrapper'>
       <div id='lift'></div>
+      <div id='lift2'></div>
     </div>
-
-    <div class='buttons'>
+    
+    <p>first lift buttons</p>
+    <div class='buttons buttons1'>
       <button class='floor3'>3</button>
       <button class='floor2'>2</button>
       <button class='floor1'>1</button>
       <button class='floor0'>-1</button>
-
-      <a class='call-lift' href='#'>call the lift</a>
     </div>
+    
+    <p>second lift buttons</p>
+    <div class='buttons buttons2'>
+      <button class='floor23'>3</button>
+      <button class='floor22'>2</button>
+      <button class='floor21'>1</button>
+      <button class='floor20'>-1</button>
+    </div>
+    <br><br><br>
+    <a class='call-lift' href='#'>call the lift</a>
   </body>
 
   <script>
     var lift = document.querySelector('#lift');
+    var lift2 = document.querySelector('#lift2');
     var btn2 = document.querySelector('.floor2');
-    var buttons = document.querySelectorAll('button');
+    var buttons = document.querySelectorAll('.buttons1 button');
+    var buttons2 = document.querySelectorAll('.buttons2 button');
     var callLift = document.querySelector('.call-lift');
 
     lift.getFloor = function(){ return lift.className};
@@ -63,7 +116,12 @@
     for (var i = 0; i < buttons.length; i++){
       buttons[i].addEventListener('click', function(e){
         lift.className = e.target.className;
-        console.log(lift.className);
+      })
+    }
+
+    for (var i = 0; i < buttons2.length; i++){
+      buttons2[i].addEventListener('click', function(e){
+        lift2.className = e.target.className;
       })
     }
 
@@ -141,7 +199,6 @@
 
     callLift.addEventListener('click', testCallLift.step_func(function(e){
       e.preventDefault();
-      console.log(floor, lift.className, 'from test');
       assert_equals(floor, lift.className);
       this.done();
     }));
