@@ -38,41 +38,115 @@
       <button class='floor2'>2</button>
       <button class='floor1'>1</button>
       <button class='floor0'>-1</button>
+
+      <a class='call-lift' href='#'>call the lift</a>
     </div>
   </body>
 
   <script>
     var lift = document.querySelector('#lift');
-    lift.getFloor = function(){ return 0};
+    var btn2 = document.querySelector('.floor2');
+    var buttons = document.querySelectorAll('button');
+    var callLift = document.querySelector('.call-lift');
+
+    lift.getFloor = function(){ return lift.className};
+
+    btn2.addEventListener('click', function(e){
+      lift.classList.add(e.target.className);
+    });
+
+    callLift.addEventListener('click', function(e){
+      e.preventDefault();
+      console.log(lift.className);
+    });
+
+    for (var i = 0; i < buttons.length; i++){
+      buttons[i].addEventListener('click', function(e){
+        lift.className = e.target.className;
+        console.log(lift.className);
+      })
+    }
+
   </script>
 
 <!--testing-->
   <script>
-    var test1 = async_test('check if lift is exist');
 
-    var lift = document.querySelector('#lift');
-
-    window.addEventListener('load', test1.step_func(function(){
+    test(function(){
+      var lift = document.querySelector('#lift');
       assert_true(lift instanceof HTMLElement);
       assert_true(lift.getFloor instanceof Function);
+    }, 'check if lift is exist');
+
+
+    test(function(){
+      var lift = document.querySelector('#lift');
+      var floor = lift.getFloor();
+      assert_equals(floor, lift.className);
+    }, 'check where is the lift');
+
+    var testBtn2Click = async_test('check if lift have class of clicked button');
+    var lift = document.querySelector('#lift');
+    var btn2 = document.querySelector('.floor2');
+
+    btn2.addEventListener('click', testBtn2Click.step_func(function(){
+      assert_true(lift.classList.contains('floor2'));
       this.done();
     }));
 
+    btn2.dispatchEvent(new Event('click'));
 
-    var test2 = async_test('check where is the lift');
 
-    var lift = document.querySelector('#lift');
-    var floor = lift.getFloor();
+    // var testBtnsClick = async_test('check if lift have classes of clicked buttons');
+    var testBtn0Click = async_test('check if lift have classes of clicked button 0');
     var buttons = document.querySelectorAll('button');
 
-    buttons.forEach(function(item){
-      item.addEventListener('click', test2.step_func(function(){
-      assert_equals(floor, 0);
+
+    buttons[0].addEventListener('click', testBtn0Click.step_func(function(e){
+      assert_true(lift.classList.contains(e.target.className));
       this.done();
     }));
+    buttons[0].dispatchEvent(new Event('click'));
 
-      item.dispatchEvent(new Event('click'));
-    })
+
+    var testBtn1Click = async_test('check if lift have classes of clicked button 1');
+    buttons[1].addEventListener('click', testBtn1Click.step_func(function(e){
+      assert_true(lift.classList.contains(e.target.className));
+      this.done();
+    }));
+    buttons[1].dispatchEvent(new Event('click'));
+
+    var testBtn2Click = async_test('check if lift have classes of clicked button 2');
+    buttons[2].addEventListener('click', testBtn2Click.step_func(function(e){
+      assert_true(lift.classList.contains(e.target.className));
+      this.done();
+    }));
+    buttons[2].dispatchEvent(new Event('click'));
+
+
+    var testBtn3Click = async_test('check if lift have classes of clicked button 3');
+    buttons[3].addEventListener('click', testBtn3Click.step_func(function(e){
+      assert_true(lift.classList.contains(e.target.className));
+      this.done();
+    }));
+    buttons[3].dispatchEvent(new Event('click'));
+
+    lift.className = '';
+
+
+    var testCallLift = async_test('check if call button works');
+    var lift = document.querySelector('#lift');
+    var callLift = document.querySelector('.call-lift');
+    var floor = lift.getFloor();
+
+    callLift.addEventListener('click', testCallLift.step_func(function(e){
+      e.preventDefault();
+      console.log(floor, lift.className, 'from test');
+      assert_equals(floor, lift.className);
+      this.done();
+    }));
+    callLift.dispatchEvent(new Event('click'));
+
 
 
   </script>

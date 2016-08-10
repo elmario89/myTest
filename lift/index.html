@@ -79,6 +79,12 @@
         height: 50px;
         margin-bottom: 10px;
       }
+
+      .call{
+        position: absolute;
+        right: 0;
+        top: 65%;
+      }
     </style>
     <div class='wrapper'>
       <div class='liftCabine liftCabine1'>1</div>
@@ -97,6 +103,19 @@
         <button class='btn-1'>1</button>
         <button class='btn-0'>-1</button>
       </div>
+
+      <div class='call'>
+        where are you
+        <form id='selectForm'>
+          <select name="floor" id="selectFloor">
+            <option value="0">-1</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+          <button type='submit' class='callBtn'>вызвать лифт</button>
+        </form>
+      </div>
     </div>
 
 <!--lift programme -->
@@ -105,6 +124,7 @@
     var buttons2 = document.querySelectorAll('.buttons.buttons2 button');
     var liftCabine1 = document.querySelector('.liftCabine1');
     var liftCabine2 = document.querySelector('.liftCabine2');
+    var form = document.querySelector('#selectForm');
 
     for (var i = 0; i < buttons1.length; i++){
       buttons1[i].addEventListener('click', function(e){
@@ -278,6 +298,44 @@
     for (var i = 0; i < buttons2.length; i++){
       checkClasses2(i);
     }
+
+    // test where are lifts
+
+    function whereAreLifts(){
+      var testWhereAreLifts = async_test('test where are lifts');
+
+      testWhereAreLifts.step(function(){
+        var form = document.querySelector('#selectForm');
+        var select = document.querySelector('#selectFloor');
+
+        var lift1Floor, lift2Floor;
+
+        form.addEventListener('submit', testWhereAreLifts.step_func(function(e){
+          e.preventDefault();
+
+          if (/btn-\d+/.test(cabine1.className)) {
+            lift1Floor = Number(cabine1.className.match(/btn-(\d+)/)[1]);
+            console.log(lift1Floor);
+          } else {
+            lift1Floor = 0;
+            console.log(lift1Floor);
+          }
+
+          if (/btn-\d+/.test(cabine2.className)) {
+            lift2Floor = Number(cabine2.className.match(/btn-(\d+)/)[1]);
+            console.log(lift2Floor);
+          } else {
+            lift2Floor = 0;
+            console.log(lift2Floor);
+          }
+        }));
+
+        form.dispatchEvent(new Event('submit'));
+      });
+    };
+
+    whereAreLifts();
+
 })();
   </script>
   </body>
