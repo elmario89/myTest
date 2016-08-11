@@ -125,6 +125,18 @@
       })
     }
 
+    function liftInteger(lift){
+      if (/floor\d+/.test(lift.className)) {
+        var integer = Number(lift.className.match(/floor(\d+)/)[1]);
+        console.log(integer);
+        return integer;
+      } else {
+        console.log("lift is on first floor");
+        var integer = 1;
+        return integer;
+      }
+    }
+
   </script>
 
 <!--testing-->
@@ -155,11 +167,9 @@
     btn2.dispatchEvent(new Event('click'));
 
 
-    // var testBtnsClick = async_test('check if lift have classes of clicked buttons');
-    var testBtn0Click = async_test('check if lift have classes of clicked button 0');
     var buttons = document.querySelectorAll('button');
 
-
+    var testBtn0Click = async_test('check if lift have classes of clicked button 0');
     buttons[0].addEventListener('click', testBtn0Click.step_func(function(e){
       assert_true(lift.classList.contains(e.target.className));
       this.done();
@@ -194,6 +204,7 @@
 
     var testCallLift = async_test('check if call button works');
     var lift = document.querySelector('#lift');
+    var lift2 = document.querySelector('#lift2');
     var callLift = document.querySelector('.call-lift');
     var floor = lift.getFloor();
 
@@ -204,6 +215,15 @@
     }));
     callLift.dispatchEvent(new Event('click'));
 
+
+    var testLiftInteger = async_test('check if I can get number of lift floor');
+
+    callLift.addEventListener('click', testLiftInteger.step_func(function(){
+      assert_equals(liftInteger(lift), 1);
+      assert_equals(liftInteger(lift2), 1);
+      this.done();
+    }))
+    callLift.dispatchEvent(new Event('click'));
 
 
   </script>
